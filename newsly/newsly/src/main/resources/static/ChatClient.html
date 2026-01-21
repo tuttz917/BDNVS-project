@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ro">   
+    <head>
+        <meta charset="UTF-8">
+        <title>Chat App (String Only)</title>
+        <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+    </head>
+
+    <body>
+
+        <input id="messageInput" placeholder="Scrie un mesaj">
+        <button id="sendButton">Trimite</button>
+
+        <h2>Mesaje:</h2>
+        <ul id="mesaje"></ul>
+
+        <script>
+            let stompClient = null;
+
+            function connect() {
+                let socket = new SockJS('/chat');
+                stompClient = Stomp.over(socket);
+
+                stompClient.connect({}, function(frame) {
+                    console.log('Conectat: ' + frame);
+
+                    // Se abonează la topic-ul de pe server: /topic/messages
+                    stompClient.subscribe('/topic/messages', function(messageOutput) {
+                        // ACUM: Primim direct un String, nu mai e nevoie de JSON.parse()
+                        let message = messageOutput.body;
+                        displayMessage(message);
+                    });
+                }, function(error) {
+                    console.error('Eroare la conectare: ' + error);
+                    setTimeout(connect, 5000); 
+                });
+            }
+
+            function displayMessage(message) {
+                let li = document.createElement('li');
+                // Afișează conținutul String-ului primit
+                li.textContent = message; 
+                document.getElementById('mesaje').appendChild(li);
+            }
+
+           function sendMessage() {
+    let input = document.getElementById('messageInput');
+    let text = input.value;
+
+    if (text.trim() === '' || stompClient == null) {
+        return;
+    }
+    
+    
+    let headers = {
+        'content-type': 'text/plain' 
+    };
+
+ 
+    stompClient.send("/app/send", headers, text); 
+
+    console.log("Mesaj String trimis la /app/send: " + text);
+    input.value = '';
+}
+
+            document.getElementById('sendButton').onclick = sendMessage;
+            
+            connect();
+        </script>
+
+    </body>
+</html>
