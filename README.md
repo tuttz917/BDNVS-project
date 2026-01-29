@@ -166,5 +166,6 @@ cache
 }
 ________________________________________
 
+Referinte: Inteligenta artificiala a fost utilizata exclusiv la realizarea documentatiei si a prezentarii power point.
 
 
