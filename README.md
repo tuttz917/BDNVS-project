@@ -1,4 +1,9 @@
 # BDNVS-project
+
+Demo:https://youtu.be/Fp9dOGanJnM
+
+Diagrame: https://excalidraw.com/#json=6vFLCbGEnERwFk3rZPiZ1,R1yc7HwAlR4ZozHer10LHg
+
 Documentație Arhitectură Caching Spring Boot
 1. Design și Integrare
 Aplicația integrează Redis pentru a îmbunătăți performanța pentru interogări frecvente, căutări semantice și operațiuni geospațiale. Arhitectura de caching interacționează cu MySQL/PostgreSQL (pentru date structurate) și utilizează Redis prin intermediul bibliotecii UnifiedJedis.
