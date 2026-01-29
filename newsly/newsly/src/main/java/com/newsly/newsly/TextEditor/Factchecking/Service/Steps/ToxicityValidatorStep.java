@@ -4,8 +4,8 @@ import java.util.function.Predicate;
 
 import org.springframework.stereotype.Component;
 
+import com.newsly.newsly.GeneralServices.ToxicityValidator;
 import com.newsly.newsly.TextEditor.Factchecking.Data.FactCheckRequest;
-import com.newsly.newsly.TextEditor.GeneralServices.ToxicityValidator;
 
 import lombok.AllArgsConstructor;
 

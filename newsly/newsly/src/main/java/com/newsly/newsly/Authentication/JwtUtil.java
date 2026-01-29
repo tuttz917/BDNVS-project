@@ -12,8 +12,8 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.springframework.stereotype.Component;
 
-import com.newsly.newsly.Registration.Model.AppRole;
-import com.newsly.newsly.Registration.Model.JwtToken;
+
+import com.newsly.newsly.TextEditor.Models.JwtToken;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -31,11 +31,10 @@ public class JwtUtil{
     }
     
     
-    public JwtToken generateToken(String username, int expiration, String role){
+    public JwtToken generateToken(String username, int expiration){
 
         String tokenText= Jwts.builder()
                 .setSubject(username)
-                .claim("role", role)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(SignatureAlgorithm.HS256, secretKey)
@@ -45,29 +44,19 @@ public class JwtUtil{
 
     }
 
-    private <T> T extractClaim(JwtToken token, Function<Claims,T> claimResolver){
+    public JwtToken generateToken(String username, int expiration, Long userId){
 
-        Claims claims= Jwts.parser()
-                        .setSigningKey(secretKey)
-                        .parseClaimsJws(token.getToken())
-                        .getBody();
+        String tokenText= Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
         
-        return claimResolver.apply(claims);
+                return JwtToken.builder().token(tokenText).userId(userId).build();
 
     }
 
-    
-    public AppRole extractRole(JwtToken token){
-
-        String roleString= extractClaim(token, claims->{
-
-            return claims.get("role", String.class);
-
-        });
-
-        return new AppRole(roleString);
-
-    }
 
     public  String extractUsername(JwtToken token){
 

@@ -1,19 +1,17 @@
 package com.newsly.newsly.Authentication;
 
 import java.io.IOException;
-import java.util.List;
-
+import java.util.ArrayList;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.newsly.newsly.Registration.Model.AppRole;
-import com.newsly.newsly.Registration.Model.JwtToken;
+import com.newsly.newsly.TextEditor.Models.JwtToken;
 
 import io.jsonwebtoken.JwtException;
 
@@ -28,15 +26,17 @@ import lombok.extern.slf4j.Slf4j;
 
 enum PublicEndpoints{
 
-    REGISTER("/api/v1/register"),
-    LOGIN("/api/v1/login"),
-    LOAD("/api/v1/articles"),
-    SEARCH("/api/v1/search");
-   
+    REGISTER("/api/v1/auth"),
+    LOGIN("/api/v1/register"),
+    REFRESH("/api/v1/refresh"),
+    ARTICLE("/api/v1/article"),
+    GEOFEED("/api/v1/geoFeed");
+
+
 
     private final String path;
 
-     PublicEndpoints(String path){
+    PublicEndpoints(String path){
 
         this.path=path;
     }  
@@ -63,10 +63,10 @@ enum PublicEndpoints{
 @Slf4j
 @Component
 @AllArgsConstructor
-public class JwtFilter  {
+public class JwtFilter  extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
-   
+
 
 
     public void doFilterInternal(HttpServletRequest request, HttpServletResponse resp, FilterChain filterChain) 
@@ -89,18 +89,20 @@ public class JwtFilter  {
         if(authHeader!= null && authHeader.startsWith("Bearer")){
 
             String tokenText=authHeader.substring(7);
-            JwtToken token= JwtTokenFactory.getToken(tokenText);
+            JwtToken token=JwtToken.builder().token(tokenText).build();
             
             try{
 
+
                 String username=jwtUtil.extractUsername(token);
 
-                AppRole role= jwtUtil.extractRole(token);
+            
+                log.info("token valid");
+            
+            
 
-                List<GrantedAuthority> authorities=  List.of(new SimpleGrantedAuthority("ROLE_"+role.getRole()));
-
-                UsernamePasswordAuthenticationToken authToken= new UsernamePasswordAuthenticationToken(username,null,authorities);
-               
+                UsernamePasswordAuthenticationToken authToken= new UsernamePasswordAuthenticationToken(username,null, new ArrayList<>());
+            
 
                 SecurityContextHolder.getContext()
                             .setAuthentication(authToken);

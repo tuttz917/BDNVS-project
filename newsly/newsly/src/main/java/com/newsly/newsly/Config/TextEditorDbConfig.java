@@ -60,7 +60,7 @@ public class TextEditorDbConfig {
 
         vendorAdapter.setShowSql(true);
         vendorAdapter.setGenerateDdl(true);
-      
+
 
         LocalContainerEntityManagerFactoryBean factory= new LocalContainerEntityManagerFactoryBean();
 

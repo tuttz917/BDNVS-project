@@ -1,6 +1,6 @@
 package com.newsly.newsly.Registration;
 
-import com.newsly.newsly.Registration.Model.AppUser;
+import com.newsly.newsly.TextEditor.Models.AppUser;
 
 public class AppUserFactory{
 
@@ -11,7 +11,7 @@ public class AppUserFactory{
     }
 
 
-    public static AppUser getUserFromRegistration(RegisterRequestInputDto request){
+    public static AppUser getUserFromRegistration(RegisterRequest request){
 
         return getUser(request.firstName(),request.lastName(),request.email(),request.userName(),request.password());
 

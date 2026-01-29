@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.newsly.newsly.GeneralServices.OpenAiService;
 import com.newsly.newsly.TextEditor.Factchecking.Data.SerpArticleDto;
-import com.newsly.newsly.TextEditor.GeneralServices.OpenAiService;
 import com.newsly.newsly.TextEditor.SourceProviding.Data.SourceProvideRequest;
 import com.newsly.newsly.TextEditor.SourceProviding.Data.SourceRequestDto;
 import com.newsly.newsly.library.Pipelines.IPipelineStep;
@@ -36,12 +36,14 @@ public class SourceOpenAiStep implements IPipelineStep<SourceProvideRequest,Sour
 
         log.info("ai step");
 
+        
+
         String content= request.getProcessedContent();
         List<SerpArticleDto> articles= request.getArticles();
 
         SourceRequestDto dto= SourceRequestDto.builder().content(content).articles(articles).build();
 
-        log.info(dto.toString());
+        
 
         JsonNode node=  openAiService.applyCompletion(prompt, dto);
         

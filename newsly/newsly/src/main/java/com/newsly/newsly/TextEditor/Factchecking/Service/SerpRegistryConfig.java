@@ -8,7 +8,7 @@ import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.newsly.newsly.TextEditor.GeneralServices.SerpApiProvider;
+import com.newsly.newsly.GeneralServices.SerpApiProvider;
 import com.newsly.newsly.library.Pipelines.FunctionRegistry;
 
 import lombok.AllArgsConstructor;

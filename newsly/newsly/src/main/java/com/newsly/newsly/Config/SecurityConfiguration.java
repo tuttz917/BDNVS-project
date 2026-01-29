@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -35,24 +35,15 @@ public class SecurityConfiguration {
         .httpBasic(basic -> basic.disable())
         .formLogin(login -> login.disable())
                 .csrf(csrf -> csrf.disable())
-             // .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
             .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/chat/**").permitAll()
-                .requestMatchers("/app/chat").permitAll()
-                .requestMatchers("/ChatClient.html").permitAll()
                 .requestMatchers(HttpMethod.POST,"/api/v1/register").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/v1/articles").permitAll()
-                .requestMatchers(HttpMethod.POST,"/api/v1/articles/search").permitAll()
-                .requestMatchers(HttpMethod.POST,"/api/v1/login").permitAll()
-                .requestMatchers(HttpMethod.POST,"/api/v1/fact-check").permitAll()
-                .requestMatchers(HttpMethod.POST,"/api/v1/source-provide").permitAll()
-                .requestMatchers(HttpMethod.POST,"/api/v1/grammar-check").permitAll()
-                .requestMatchers(HttpMethod.POST,"/api/v1/target-enhance").permitAll()
-                .requestMatchers(HttpMethod.POST,"/api/v1/argument-add").permitAll()
-                .requestMatchers(HttpMethod.POST,"/api/v1/argument-contradict").permitAll()
+                .requestMatchers("/editor-ws/**").permitAll()
+                .requestMatchers(HttpMethod.POST,"/api/v1/auth").permitAll()
+                .requestMatchers(HttpMethod.POST,"/api/v1/refresh").permitAll()
                 .requestMatchers(HttpMethod.POST,"/api/v1/article").permitAll()
-                .requestMatchers(HttpMethod.POST,"/api/v1/geofeed").permitAll()
+                .requestMatchers(HttpMethod.POST,"/api/v1/geoFeed").permitAll()
                 .anyRequest().authenticated())
 
             

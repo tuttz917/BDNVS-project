@@ -6,8 +6,12 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.mongodb.MongoTransactionManager;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.transaction.PlatformTransactionManager;
+
 
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
@@ -39,6 +43,22 @@ public class ArticleDbConfig  {
         return MongoClients.create(settings);
         
     }
+
+    @Bean(name="mongoClientDatabaseFactory")
+    SimpleMongoClientDatabaseFactory simpleMongoClientDatabaseFactory(@Qualifier("articleMongoClient") MongoClient client){
+
+        return new SimpleMongoClientDatabaseFactory(client,"articles-storage");
+
+    }
+
+    @Bean(name="articleDbTransactionManager")
+    PlatformTransactionManager mongoTransactionManager(@Qualifier("mongoClientDatabaseFactory") SimpleMongoClientDatabaseFactory factory ){
+
+
+        return new MongoTransactionManager(factory);
+
+    }
+
 
     @SuppressWarnings("null")
     @Bean(name="articleMongoTemplate")

@@ -11,9 +11,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
-import com.newsly.newsly.TextEditor.GeneralServices.EmbeddingService;
-import com.newsly.newsly.TextEditor.GeneralServices.NliClassification;
-import com.newsly.newsly.TextEditor.GeneralServices.TranslateServiceWrapper;
+import com.newsly.newsly.GeneralServices.EmbeddingService;
+import com.newsly.newsly.GeneralServices.NliClassification;
+import com.newsly.newsly.GeneralServices.TranslateServiceWrapper;
 import com.newsly.newsly.TextEditor.Models.SourceProvideResponse;
 
 import com.newsly.newsly.TextEditor.RedisRepo.RedisSourceRepo;

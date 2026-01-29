@@ -1,6 +1,8 @@
     package com.newsly.newsly.Config;
 
-    import org.springframework.beans.factory.annotation.Qualifier;
+    import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.cache.annotation.EnableCaching;
     import org.springframework.context.annotation.Bean;
@@ -67,6 +69,7 @@ public UnifiedJedis unifiedJedis() {
             };
 
         }
+
 
 
         

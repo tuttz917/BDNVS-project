@@ -4,8 +4,8 @@ import java.util.function.Predicate;
 
 import org.springframework.stereotype.Component;
 
+import com.newsly.newsly.GeneralServices.WordCountPredicate;
 import com.newsly.newsly.TextEditor.Factchecking.Data.RawFactCheckRequest;
-import com.newsly.newsly.TextEditor.GeneralServices.WordCountPredicate;
 
 import lombok.AllArgsConstructor;
 

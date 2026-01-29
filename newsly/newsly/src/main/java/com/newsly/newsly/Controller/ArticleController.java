@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.lang.reflect.AccessFlag.Location;
 import java.util.List;
 import java.util.Map;
 
@@ -58,7 +59,7 @@ public class ArticleController {
 
             jedis.del(feedkey);
 
-            jedis.geoadd("article:location", latitude,longitude,feedkey);
+            jedis.geoadd("article:location",longitude,latitude,feedkey);
 
             cache.saveWithKeyandTTL(feedkey, article, new Long(60*30));
 
@@ -67,18 +68,25 @@ public class ArticleController {
     }
 
     @PostMapping("/api/v1/geoFeed")
-    public List<Article> geoFeed(@RequestBody Double latitude, Double longitude) {
+    public List<Article> geoFeed(@RequestBody LocationData data) {
 
-        GeoSearchParam params= new GeoSearchParam().fromLonLat(longitude,latitude).byRadius(50,GeoUnit.KM);
+        log.info("geofeed request");
+
+        GeoSearchParam params= new GeoSearchParam().fromLonLat(data.getLongitude(),data.getLatitude()).byRadius(50,GeoUnit.KM);
 
         List<GeoRadiusResponse> responses= jedis.geosearch("article:location",params);
+
+        log.info("check1");
+
+        log.info(Integer.toString(responses.size()));
 
         List<Article> articles= responses.stream().map(response->{
 
             Map<String,String> fieldsMap= jedis.hgetAll(response.getMemberByString());
 
+            log.info(fieldsMap.toString());
+
             return Article.builder()
-                        .id(fieldsMap.get("id"))
                         .articleURL(fieldsMap.get("articleUrl"))
                         .title(fieldsMap.get("title"))
                         .description(fieldsMap.get("description"))

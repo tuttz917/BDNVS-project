@@ -11,7 +11,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.newsly.newsly.Authentication.EncryptionService;
-import com.newsly.newsly.Authentication.JwtFilter;
+
 import com.newsly.newsly.Authentication.JwtUtil;
 
 
@@ -25,9 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class AppConfig {
 
-  @Bean JwtFilter jwtFilter(JwtUtil jwtUtil){
-    return new JwtFilter(jwtUtil);
-  }
+ 
 
   @Bean PasswordEncoder passwordEncoder(){
     return new BCryptPasswordEncoder();

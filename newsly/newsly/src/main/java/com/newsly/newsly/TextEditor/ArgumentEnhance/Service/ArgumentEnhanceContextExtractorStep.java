@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import com.newsly.newsly.GeneralServices.LinkContentExtractor;
 import com.newsly.newsly.TextEditor.ArgumentEnhance.Data.ArgumentEnhanceRequest;
 import com.newsly.newsly.TextEditor.Factchecking.Data.SerpArticleDto;
-import com.newsly.newsly.TextEditor.GeneralServices.LinkContentExtractor;
 import com.newsly.newsly.library.Pipelines.FunctionRegistry;
 import com.newsly.newsly.library.Pipelines.IPipelineStep;
 

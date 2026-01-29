@@ -5,9 +5,7 @@ import java.util.function.Predicate;
 
 import org.springframework.stereotype.Component;
 
-import com.newsly.newsly.Registration.Repository.UserRepo;
-
-
+import com.newsly.newsly.TextEditor.Repo.UserRepo;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 @AllArgsConstructor
 @Slf4j
 @Component
-public class EmailDuplicatePredicate  implements Predicate<RegisterRequestInputDto>{
+public class EmailDuplicatePredicate  implements Predicate<RegisterRequest>{
 
     
     private UserRepo repo;
@@ -23,7 +21,7 @@ public class EmailDuplicatePredicate  implements Predicate<RegisterRequestInputD
    
 
     @Override
-    public boolean test(RegisterRequestInputDto registerRequest){
+    public boolean test(RegisterRequest registerRequest){
     
         log.info("validare email");
 

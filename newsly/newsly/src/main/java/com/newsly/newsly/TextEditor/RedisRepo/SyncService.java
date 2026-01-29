@@ -3,19 +3,25 @@ package com.newsly.newsly.TextEditor.RedisRepo;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.redis.core.ScanCursor;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.newsly.newsly.TextEditor.Models.Document;
 import com.newsly.newsly.TextEditor.Models.FactCheckResponse;
 import com.newsly.newsly.TextEditor.Models.SourceProvideResponse;
+import com.newsly.newsly.TextEditor.Repo.DocumentRepo;
 import com.newsly.newsly.TextEditor.Repo.FactCheckResponseRepo;
 import com.newsly.newsly.TextEditor.Repo.SourceProvideResponseRepo;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.UnifiedJedis;
+import redis.clients.jedis.params.ScanParams;
+import redis.clients.jedis.resps.ScanResult;
 
 @Service
 @EnableScheduling
@@ -28,6 +34,7 @@ public class SyncService {
     SourceProvideResponseRepo sourceRepo;
     RedisSourceRepo sourceCache;
     RedisFactCheckRepo factCheckCache;
+    DocumentRepo documentRepo;
 
 
     @Scheduled(fixedDelay = 30000)
@@ -37,6 +44,7 @@ public class SyncService {
 
             syncFactChecks();
             syncSources();
+            syncDocuments();
 
             log.info("sync done");
 
@@ -153,5 +161,46 @@ public class SyncService {
 
     
 }
+    @Transactional
+    private void syncDocuments(){
+        
+        String cursor= "0";
+        String pattern= "document:*";
+
+        ScanParams params= new ScanParams().match(pattern).count(100);
+
+        do{
+
+            ScanResult<String> scanResult= jedis.scan(cursor,params);
+            for(String key: scanResult.getResult()){
+
+                String updatedContent= jedis.get(key);
+                String id= key.substring("document:".length());
+                try{
+                String syncKey="sync:document:"+ id;
+                if(jedis.get(syncKey).equals("false")){
+
+                Document document= documentRepo.findById(id).get();
+                document.setContent(updatedContent);
+                documentRepo.save(document);
+
+                jedis.set(syncKey,"true");
+
+                }                    
+                
+                
+                }catch(Exception e){
+                    log.info("documentul nu mai exista in baza de date");
+                
+                }
+            
+
+                cursor= scanResult.getCursor();
+
+            }
+
+        }while(!cursor.equals("0"));
+
+    }
 
 }

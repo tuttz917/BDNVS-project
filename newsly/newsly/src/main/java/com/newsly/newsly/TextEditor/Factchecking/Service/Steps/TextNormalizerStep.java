@@ -2,8 +2,8 @@ package com.newsly.newsly.TextEditor.Factchecking.Service.Steps;
 
 import org.springframework.stereotype.Component;
 
+import com.newsly.newsly.GeneralServices.TextNormalizer;
 import com.newsly.newsly.TextEditor.Factchecking.Data.FactCheckRequest;
-import com.newsly.newsly.TextEditor.GeneralServices.TextNormalizer;
 import com.newsly.newsly.library.Pipelines.IPipelineStep;
 
 import lombok.AllArgsConstructor;

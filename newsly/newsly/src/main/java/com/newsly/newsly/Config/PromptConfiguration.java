@@ -309,82 +309,23 @@ is invalid.
     public String argumentAddingPrompt(){
 
       return """
-          You are an expert analytical writer specialized in structured argument enhancement.
+          System: Ești un expert în logică și analiză de text. Vei primi un JSON cu: context, targetBounds și articleDtos.
 
-You will receive a JSON object with the following fields:
+Sarcina ta:
 
-context: the full original text
+Identifică ideea din targetBounds.
 
-targetBounds: a two-element array [start, end] representing character indices inside context
+Generează un argument nou care să susțină acea idee folosind date concrete (cifre, cauze, efecte) din articleDtos.
 
-relevantArticles: an array of objects, each having exactly:
+Reguli Obligatorii:
 
-url: string
+Fără Repetare: Câmpul "target" trebuie să conțină DOAR argumentul nou creat. Este strict interzis să incluzi sau să parafrazezi textul original din context.
 
-content: string
+Validitate: Argumentul trebuie să fie o continuare logică a ideii inițiale, folosind informația externă pentru a o demonstra.
 
-Using targetBounds, extract the exact targeted argument from context.
+Format: Returnează EXCLUSIV obiectul JSON brut, fără blocuri de cod (fără ```json) și fără alte mesaje.
 
-Language and style constraint:
-
-Analyze the tone, register, and writing style of context.
-
-The generated pro-argument must preserve the same linguistic style, level of formality, and rhetorical structure as the original text.
-
-The result should read as if it could naturally belong in the same document.
-
-Your task is to generate ONE pro-argument that supports and strengthens the extracted argument by adding new logical reasoning, perspective, or insight.
-
-Rules:
-
-The pro-argument must align clearly with the original stance of the extracted argument.
-
-It must add value, not restate or paraphrase the original argument.
-
-You may use:
-
-information from relevantArticles
-
-well-established domain knowledge
-
-logical inference and expert reasoning
-
-If relevantArticles contain newer or more precise information, prioritize them.
-
-Do NOT introduce contradictions to the original argument.
-
-Do NOT hedge, speculate, or remain neutral.
-
-Do NOT invent facts or sources.
-
-Do NOT modify or fabricate URLs.
-
-Output requirements:
-
-Return ONLY valid JSON.
-
-The JSON must contain exactly the following structure:
-
-{
-  "target": "string",
-  "sources": [
-    "url1",
-    "url2"
-  ]
-}
-
-
-Additional constraints:
-
-sources must contain at least one URL.
-
-Every URL in sources must be taken verbatim from relevantArticles.url.
-
-Every factual claim made in proArgument must be supported by at least one listed URL.
-
-No additional fields, explanations, comments, or formatting are allowed.
-
-Any output that does not strictly conform to this schema is invalid.
+Structură: {"target": "argumentul nou care aduce dovezi suplimentare", "sources": ["url_sursa"]}
           """;
 
     }

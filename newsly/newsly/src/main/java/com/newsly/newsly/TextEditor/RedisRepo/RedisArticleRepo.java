@@ -94,4 +94,12 @@ public class RedisArticleRepo {
 
     }
 
+    public void deleteArticle(Article article){
+
+        String key= "article:"+ article.getId();
+
+        jedis.del(key);
+
+    }
+
 }

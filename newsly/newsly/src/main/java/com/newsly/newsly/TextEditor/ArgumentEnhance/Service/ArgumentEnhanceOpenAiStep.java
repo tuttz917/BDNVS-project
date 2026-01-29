@@ -7,10 +7,10 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.newsly.Utils.Pair;
+import com.newsly.newsly.GeneralServices.OpenAiService;
 import com.newsly.newsly.TextEditor.ArgumentEnhance.Data.ArgumentEnhanceRequest;
 import com.newsly.newsly.TextEditor.ArgumentEnhance.Data.ArgumentEnhanceRequestDto;
 import com.newsly.newsly.TextEditor.Factchecking.Data.SerpArticleDto;
-import com.newsly.newsly.TextEditor.GeneralServices.OpenAiService;
 import com.newsly.newsly.library.Pipelines.IPipelineStep;
 
 import lombok.extern.slf4j.Slf4j;

@@ -26,12 +26,11 @@ public class AuthenticationManager implements Consumer<LoginResponse> {
         
 
         String username= loginResponse.getUser().getUsername();
-        String role= loginResponse.getRole().getRole();
+    
 
-        List<GrantedAuthority> authorities= List.of(new SimpleGrantedAuthority("ROLE_"+role));
         
 
-        UsernamePasswordAuthenticationToken authenticationToken= new UsernamePasswordAuthenticationToken( username,null,authorities);
+        UsernamePasswordAuthenticationToken authenticationToken= new UsernamePasswordAuthenticationToken( username,null);
 
         SecurityContextHolder.getContext()
                     .setAuthentication(authenticationToken);

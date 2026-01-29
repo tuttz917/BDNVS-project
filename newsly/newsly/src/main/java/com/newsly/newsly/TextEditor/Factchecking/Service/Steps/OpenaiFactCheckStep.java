@@ -7,11 +7,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.JsonNode;
-
+import com.newsly.newsly.GeneralServices.OpenAiService;
 import com.newsly.newsly.TextEditor.Factchecking.Data.FactCheckRequest;
 import com.newsly.newsly.TextEditor.Factchecking.Data.FactCheckRequestDto;
 import com.newsly.newsly.TextEditor.Factchecking.Data.SerpArticleDto;
-import com.newsly.newsly.TextEditor.GeneralServices.OpenAiService;
 import com.newsly.newsly.library.Pipelines.IPipelineStep;
 
 

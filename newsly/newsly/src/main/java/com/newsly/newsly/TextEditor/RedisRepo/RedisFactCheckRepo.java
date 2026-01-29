@@ -68,7 +68,8 @@ public void save(FactCheckResponse response) {
     jedis.hset(baseKey.getBytes(), binaryFields);
     jedis.rpush(linksKey.getBytes(),encodedList);
     
-    jedis.expire(baseKey, 7200);
+    jedis.expire(baseKey, 2*60*60);
+    jedis.expire(linksKey, 2*60*60);
 }
 
 
@@ -96,26 +97,28 @@ public void saveInQueue(FactCheckResponse response){
 public FactCheckSimilarityCheckResult findClosest(float[] embeddings) {
     
     ByteBuffer bb = ByteBuffer.allocate(embeddings.length * 4);
- 
+
+    bb.order(ByteOrder.LITTLE_ENDIAN);
+
     for (float f : embeddings) {
         bb.putFloat(f);
     }
     byte[] queryVector = bb.array();
 
-   String queryExpression = "@embedding:[VECTOR_RANGE 0.02 $vector]=>{$yield_distance_as: vector_score}";
+   String queryExpression = "*=>[KNN 1 @embedding $vector AS vector_score]";
     
     Query q = new Query(queryExpression)
             .addParam("vector", queryVector)
             .dialect(2) 
             .returnFields("content", "value", "vector_score");
 
-    log.info("Căutăm cel mai apropiat vecin în indexul idx:factcheck");
+    log.info("Cautam cel mai apropiat vecin in indexul idx:factcheck");
 
     try {
         SearchResult result = jedis.ftSearch("idx:factcheck", q);
 
         if (result == null || result.getTotalResults() == 0) {
-            log.info("Niciun rezultat găsit în Redis.");
+            log.info("Niciun rezultat gasit in Redis.");
             return null;
         }
 
@@ -128,7 +131,7 @@ public FactCheckSimilarityCheckResult findClosest(float[] embeddings) {
         List<String> links= jedis.lrange(linksId, 0, -1);
         
         String score = doc.getString("vector_score");
-        log.info("Distanță găsită: {}", score);
+        log.info("Distanta gasita: {}", score);
 
     
 
@@ -139,7 +142,7 @@ public FactCheckSimilarityCheckResult findClosest(float[] embeddings) {
                 .build();
 
     } catch (Exception e) {
-        log.error("Eroare critică la FT.SEARCH: {}", e.getMessage());
+        log.error("Eroare critica la FT.SEARCH: {}", e.getMessage());
         return null;
     }
 }

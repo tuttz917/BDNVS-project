@@ -21,7 +21,8 @@ public class CookieUtil{
                                 .httpOnly(true)
                                 .secure(false)//in productie il punem true
                                 .maxAge( duration)
-                                .path("/api/v1/refresh")
+                                .path("/")
+                                .sameSite("Lax")
                                 .build();
 
         }

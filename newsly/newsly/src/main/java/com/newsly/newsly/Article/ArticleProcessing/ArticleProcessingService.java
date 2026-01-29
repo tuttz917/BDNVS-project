@@ -38,7 +38,7 @@ public class ArticleProcessingService {
 
     }
 
-    @Scheduled(fixedDelay = 20000)
+    //@Scheduled(fixedDelay = 20000)
     public void extractFeedData() {
 
         log.info("serviciu de extragere al articolelor");

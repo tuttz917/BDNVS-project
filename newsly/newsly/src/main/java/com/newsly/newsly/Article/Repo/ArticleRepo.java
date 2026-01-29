@@ -8,6 +8,7 @@ package com.newsly.newsly.Article.Repo;
 
 
 
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 
@@ -15,7 +16,7 @@ import com.newsly.newsly.Article.Models.Article;
 
 
 
-public interface ArticleRepo extends MongoRepository<Article,String>
+public interface ArticleRepo extends MongoRepository<Article,String>, ArticleRepoCustom
 {
 
 
@@ -29,6 +30,24 @@ public interface ArticleRepo extends MongoRepository<Article,String>
 
 
                                 }
+
+
+interface ArticleRepoCustom{
+
+
+
+}
+
+
+class ArticleRepoImpl implements ArticleRepoCustom{
+
+    MongoTemplate mongoTemplate;
+
+
+    
+
+    }
+
 
 
 

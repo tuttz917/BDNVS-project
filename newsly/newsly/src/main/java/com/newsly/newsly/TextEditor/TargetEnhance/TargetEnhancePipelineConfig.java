@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.newsly.newsly.TextEditor.GeneralServices.OpenAiService;
+import com.newsly.newsly.GeneralServices.OpenAiService;
 import com.newsly.newsly.TextEditor.TargetEnhance.Data.TargetEnhanceRawRequest;
 import com.newsly.newsly.TextEditor.TargetEnhance.Data.TargetEnhanceRequest;
 import com.newsly.newsly.TextEditor.TargetEnhance.Data.TargetEnhanceResponse;

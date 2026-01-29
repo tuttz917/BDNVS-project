@@ -6,8 +6,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.newsly.newsly.GeneralServices.SerpApiProvider;
 import com.newsly.newsly.TextEditor.Factchecking.Data.FactCheckRequest;
-import com.newsly.newsly.TextEditor.GeneralServices.SerpApiProvider;
 import com.newsly.newsly.library.Pipelines.IPipelineStep;
 
 import lombok.AllArgsConstructor;

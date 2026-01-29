@@ -11,11 +11,11 @@ import com.newsly.newsly.library.Validators.Validator;
 public class ValidationChainConfig {
 
     @Bean("regReqValidationChain")
-    ValidationChain<RegisterRequestInputDto> registerRequestValidationChain(Validator<RegisterRequestInputDto> confirmPassValidator
-                                                                        , Validator<RegisterRequestInputDto> emailDuplValidator
-                                                                        , Validator<RegisterRequestInputDto> usernameDuplValidator){
+    ValidationChain<RegisterRequest> registerRequestValidationChain(Validator<RegisterRequest> confirmPassValidator
+                                                                        , Validator<RegisterRequest> emailDuplValidator
+                                                                        , Validator<RegisterRequest> usernameDuplValidator){
 
-            return ValidationChain.<RegisterRequestInputDto>builder()
+            return ValidationChain.<RegisterRequest>builder()
                                                         .then(confirmPassValidator)
                                                         .then(emailDuplValidator)
                                                         .then(usernameDuplValidator)
@@ -27,9 +27,9 @@ public class ValidationChainConfig {
 
 
     @Bean("confirmPassValidator")
-    Validator<RegisterRequestInputDto> confirmPasswordValidator(ConfirmPasswordPredicate passwordPredicate){
+    Validator<RegisterRequest> confirmPasswordValidator(ConfirmPasswordPredicate passwordPredicate){
 
-        return Validator.<RegisterRequestInputDto>builder()
+        return Validator.<RegisterRequest>builder()
                                                 .predicate(passwordPredicate)
                                                 .build();
         
@@ -37,18 +37,18 @@ public class ValidationChainConfig {
 
 
     @Bean("emailDuplValidator")
-    Validator<RegisterRequestInputDto> emailDuplicateValidator(EmailDuplicatePredicate emailPredicate){
+    Validator<RegisterRequest> emailDuplicateValidator(EmailDuplicatePredicate emailPredicate){
 
-        return Validator.<RegisterRequestInputDto>builder()
+        return Validator.<RegisterRequest>builder()
                                                 .predicate(emailPredicate)
                                                 .build();
 
     }
 
     @Bean("usernameDuplValidator")
-    Validator<RegisterRequestInputDto> usernameDuplicatePredicate(UserNameDuplicatePredicate usernamePredicate){
+    Validator<RegisterRequest> usernameDuplicatePredicate(UserNameDuplicatePredicate usernamePredicate){
 
-        return Validator.<RegisterRequestInputDto>builder() 
+        return Validator.<RegisterRequest>builder() 
                                                 .predicate(usernamePredicate)
                                                 .build();
 

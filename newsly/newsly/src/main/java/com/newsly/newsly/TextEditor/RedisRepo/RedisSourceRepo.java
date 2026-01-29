@@ -1,7 +1,6 @@
 package com.newsly.newsly.TextEditor.RedisRepo;
-
-
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -61,6 +60,8 @@ public class RedisSourceRepo {
 
         ByteBuffer bb= ByteBuffer.allocate(response.getEmbedding().length*4);
 
+        bb.order(ByteOrder.LITTLE_ENDIAN);
+
         for(float embedding: response.getEmbedding()){
 
             bb.putFloat(embedding);
@@ -77,6 +78,9 @@ public class RedisSourceRepo {
 
         jedis.hset(basekey.getBytes(),binaryFields);
         jedis.rpush(linksKey.getBytes(), links);
+
+        jedis.expire(basekey, 60*60*2);
+        jedis.expire(linksKey, 60*60*2);
         
 
     }
@@ -87,6 +91,8 @@ public class RedisSourceRepo {
 
         ByteBuffer bb= ByteBuffer.allocate(embeddings.length*4);
 
+        bb.order(ByteOrder.LITTLE_ENDIAN);
+
         for(float embedding: embeddings){
 
             bb.putFloat(embedding);
@@ -95,7 +101,7 @@ public class RedisSourceRepo {
 
         byte[] array= bb.array();
 
-        String queryExpression = "@embedding:[VECTOR_RANGE 0.02 $vector]=>{$yield_distance_as: vector_score}";
+        String queryExpression = "*=>[KNN 1 @embedding $vector AS vector_score]";
 
         log.info("check2");
 
@@ -135,6 +141,7 @@ public class RedisSourceRepo {
         log.info("check4");
 
         List<String> links= jedis.lrange(linksKey, 0, -1);
+
 
         log.info(links.toString());
 
