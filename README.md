@@ -1,5 +1,5 @@
 # BDNVS-project
-
+* pentru o lizibilitate mai buna, sugerez a citi readme-ul in modul edit. Multumesc!
 Demo:https://youtu.be/Fp9dOGanJnM
 
 Diagrame: https://excalidraw.com/#json=6vFLCbGEnERwFk3rZPiZ1,R1yc7HwAlR4ZozHer10LHg
